@@ -1,0 +1,37 @@
+# Node / Playwright
+node_modules/
+test-results/
+playwright-report/
+blob-report/
+junit*.xml
+/playwright/.cache/
+.auth/
+**/.auth/
+*storageState*.json
+!**/storageState.example.json
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+# Secrets / env
+.env
+.env.*
+!.env.example
+# Reference material is never committed
+*.pdf
+refs/
+# Run outputs (summaries that docs rely on live in evidence/ and are committed deliberately)
+out/
+traces/
+sbom*.json
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
+crash.log
+backend_override.tf
