@@ -1,0 +1,97 @@
+# Playwright end-to-end suite against the local demo app (started by webServer).
+#   e2e (3 shards): setup + api + chromium + healing + generated, blob reporter per shard
+#   report: merge the blobs into one HTML report and one JUnit file (artifacts)
+#   cross-browser: @cross / @mobile tests on Firefox, WebKit and a Pixel profile
+#   visual: screenshot baselines inside the pinned official Docker image (fonts match the baselines)
+# Retries are 1 on CI and failOnFlakyTests is on: a test that only passes on retry fails the run.
+name: e2e
+on:
+  push: { branches: [main] }
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  PYTHON: python
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with: { python-version: "3.12", cache: pip }
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with: { node-version: "22", cache: npm }
+      - run: pip install -e .
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Playwright shard ${{ matrix.shard }}/3
+        run: npx playwright test --project=setup --project=api --project=chromium --project=healing --project=generated --shard=${{ matrix.shard }}/3
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: ${{ !cancelled() }}
+        with:
+          name: blob-report-${{ matrix.shard }}
+          path: blob-report
+          retention-days: 7
+
+  report:
+    needs: e2e
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with: { node-version: "22", cache: npm }
+      - run: npm ci
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with: { path: all-blob-reports, pattern: blob-report-*, merge-multiple: true }
+      - name: Merge shards into HTML + JUnit
+        env:
+          PLAYWRIGHT_JUNIT_OUTPUT_NAME: junit.xml
+        run: npx playwright merge-reports --reporter=html,junit all-blob-reports
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with: { name: playwright-html-report, path: playwright-report, retention-days: 14 }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with: { name: junit, path: junit.xml, retention-days: 14 }
+
+  cross-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with: { python-version: "3.12", cache: pip }
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with: { node-version: "22", cache: npm }
+      - run: pip install -e .
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - name: Firefox, WebKit, mobile emulation
+        run: npx playwright test --project=setup --project=firefox --project=webkit --project=mobile --reporter=list,github
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: failure()
+        with: { name: cross-browser-results, path: test-results, retention-days: 7 }
+
+  visual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - name: Build the test image (official Playwright image, digest-pinned)
+        run: docker build -f Dockerfile.e2e -t larkspur-e2e .
+      - name: Visual comparison in the container
+        run: docker run --name visual --ipc=host -e CI=true larkspur-e2e --project=visual --reporter=list
+      - name: Copy diffs out of the container
+        if: failure()
+        run: docker cp visual:/work/test-results ./test-results || true
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: failure()
+        with: { name: visual-diffs, path: test-results, retention-days: 7 }
