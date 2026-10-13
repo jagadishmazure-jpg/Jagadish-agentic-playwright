@@ -1,0 +1,10 @@
+export { AssistantPage } from './AssistantPage';
+export { BasePage } from './BasePage';
+export { CartPage } from './CartPage';
+export { CatalogPage } from './CatalogPage';
+export { CheckoutPage } from './CheckoutPage';
+export { ConsolePage } from './ConsolePage';
+export { LoginPage } from './LoginPage';
+export { OrdersPage } from './OrdersPage';
+export { ProductPage } from './ProductPage';
+export { ReturnsPage } from './ReturnsPage';
