@@ -33,7 +33,7 @@
     "@azure/playwright": "1.1.6",
     "@playwright/mcp": "0.0.83",
     "@playwright/test": "1.64.0",
-    "@types/node": "24.19.2",
-    "typescript": "5.9.3"
+    "@types/node": "26.6.5",
+    "typescript": "7.0.2"
   }
 }
