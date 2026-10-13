@@ -67,6 +67,7 @@ async def security_headers(request: Request, call_next):
 
 # ------------------------------------------------------------------ pages
 PAGES = ["index", "login", "account", "catalog", "product", "cart", "checkout", "returns", "orders", "assistant", "console"]
+REDIRECTS = {p: f"/{p}" for p in PAGES}
 
 
 def _page(name: str) -> HTMLResponse:
@@ -370,7 +371,8 @@ def decide(aid: str, body: Decision, lk_session: str | None = Cookie(default=Non
     try:
         who = _user(lk_session, authorization)
     except HTTPException:
-        pass
+        # Not signed in: allowed to deny (cancel) a request, never to approve one (checked next).
+        who = "anonymous"
     if body.approve and (who == "anonymous" or USERS[who]["role"] != "specialist"):
         raise HTTPException(403, "only a returns specialist can approve a refund")
     try:
@@ -400,4 +402,5 @@ def favicon():
 
 @app.get("/go/{name}", include_in_schema=False)
 def go(name: str):
-    return RedirectResponse(f"/{name}" if name in PAGES else "/")
+    # Redirect only to a fixed table of local paths; the user value is a lookup key, never part of the URL.
+    return RedirectResponse(REDIRECTS.get(name, "/"))

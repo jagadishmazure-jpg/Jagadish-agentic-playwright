@@ -40,9 +40,12 @@ def test_product_crud_requires_staff(client):
     assert client.post("/api/products", json=p, headers={"Authorization": f"Bearer {tok}"}).status_code == 403
     st = client.post("/api/auth/token", json={"username": "specialist", "password": "trail-demo-3"}).json()["access_token"]
     h = {"Authorization": f"Bearer {st}"}
-    assert client.post("/api/products", json=p, headers=h).status_code == 201
-    assert client.patch("/api/products/LK-TST-900", json={"price": 12}, headers=h).json()["price"] == 12
-    assert client.delete("/api/products/LK-TST-900", headers=h).status_code == 204
+    created = client.post("/api/products", json=p, headers=h)
+    assert created.status_code == 201
+    patched = client.patch("/api/products/LK-TST-900", json={"price": 12}, headers=h)
+    assert patched.json()["price"] == 12
+    deleted = client.delete("/api/products/LK-TST-900", headers=h)
+    assert deleted.status_code == 204
 
 
 def test_catalog_pagination(client):
