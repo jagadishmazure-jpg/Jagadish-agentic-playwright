@@ -1,0 +1,10 @@
+node_modules
+.venv
+test-results
+playwright-report
+blob-report
+.auth
+.git
+out
+evidence/runs
+**/__pycache__

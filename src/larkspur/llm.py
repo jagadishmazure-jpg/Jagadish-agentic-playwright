@@ -17,7 +17,6 @@ def model_from_env(seed: int) -> FakeModel:
         return FakeModel(seed=seed, gullible=os.environ.get("LARKSPUR_GULLIBLE") == "1")
     if choice == "azure":  # pragma: no cover - needs Azure and the `azure` extra
         raise NotImplementedError(
-            "Azure mode: install the 'azure' extra and wire agent_framework's Azure OpenAI chat client with "
-            "DefaultAzureCredential; see docs/azure.md. Not run from this repository."
+            "Azure mode: install the 'azure' extra and wire agent_framework's Azure OpenAI chat client with DefaultAzureCredential; see docs/azure.md. Not run from this repository."
         )
     raise ValueError(f"unknown LARKSPUR_LLM={choice!r}")

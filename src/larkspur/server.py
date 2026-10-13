@@ -79,7 +79,7 @@ def home():
 
 
 for _name in PAGES[1:]:
-    app.add_api_route(f"/{_name}", (lambda n: (lambda: _page(n)))(_name), methods=["GET"], response_class=HTMLResponse)
+    app.add_api_route(f"/{_name}", (lambda n: lambda: _page(n))(_name), methods=["GET"], response_class=HTMLResponse)
 
 
 @app.get("/healthz")

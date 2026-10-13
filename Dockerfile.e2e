@@ -1,0 +1,16 @@
+# Runs the Playwright suite inside Microsoft's official image (same browsers, fonts and OS as CI).
+# The image tag must match @playwright/test in package.json.
+FROM mcr.microsoft.com/playwright:v1.64.0-noble@sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f
+WORKDIR /work
+RUN apt-get update && apt-get install -y --no-install-recommends python3-venv && rm -rf /var/lib/apt/lists/*
+COPY pyproject.toml ./
+COPY src ./src
+RUN python3 -m venv /opt/venv && /opt/venv/bin/pip install --no-cache-dir -e .
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY . .
+ENV PYTHON=/opt/venv/bin/python TEST_ENV=docker NPM_CONFIG_UPDATE_NOTIFIER=false
+RUN useradd -m pwuser || true && chown -R pwuser /work
+USER pwuser
+ENTRYPOINT ["npx", "playwright", "test"]
+CMD ["--project=visual"]

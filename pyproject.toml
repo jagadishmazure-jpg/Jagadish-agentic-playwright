@@ -34,7 +34,7 @@ testpaths = ["tests/py"]
 addopts = "-q"
 
 [tool.ruff]
-line-length = 160
+line-length = 200
 target-version = "py311"
 extend-exclude = ["node_modules"]
 
