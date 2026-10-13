@@ -1,0 +1,1 @@
+{ "analyzers": { "core": { "enabled": true, "rules": { "use-recent-api-versions": { "level": "off" } } } } }

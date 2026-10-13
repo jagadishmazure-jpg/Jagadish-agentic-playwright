@@ -4,7 +4,17 @@
   "description": "Playwright in agentic AI: a classic QA framework, QA for an AI agent app, and Playwright as an agent's hands.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "playwright test",
+    "test:api": "playwright test --project=api",
+    "test:agent-app": "playwright test tests/agent-app",
+    "test:cross": "playwright test --project=firefox --project=webkit --project=mobile",
+    "test:visual:docker": "docker build -f Dockerfile.e2e -t larkspur-e2e . && docker run --rm --ipc=host larkspur-e2e",
+    "test:healing": "playwright test --project=healing",
+    "test:generated": "playwright test --project=generated",
+    "test:azure": "playwright test --config=playwright.service.config.ts",
+    "typecheck": "tsc -p . --noEmit",
+    "report": "playwright show-report",
+    "flakiness": "node scripts/measure_flakiness.mjs"
   },
   "repository": {
     "type": "git",
@@ -19,6 +29,8 @@
   "homepage": "https://github.com/jagadishmazure-jpg/Jagadish-agentic-playwright#readme",
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
+    "@azure/identity": "4.13.3",
+    "@azure/playwright": "1.1.6",
     "@playwright/mcp": "0.0.83",
     "@playwright/test": "1.64.0",
     "@types/node": "24.19.2",
