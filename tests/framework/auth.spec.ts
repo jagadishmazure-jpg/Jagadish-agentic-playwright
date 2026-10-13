@@ -49,6 +49,7 @@ test.describe('authentication and sessions', () => {
 
   test('signed-out users are sent to sign in', async ({ page }) => {
     await page.goto('/orders');
-    await expect(page.getByText('Please sign in to see your orders.')).toBeVisible();
+    const notice = page.getByText('Please sign in to see your orders.');
+    await expect(notice).toBeVisible();
   });
 });

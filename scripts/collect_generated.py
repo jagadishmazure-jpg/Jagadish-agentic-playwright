@@ -26,6 +26,8 @@ def body(replay: str, base: str) -> list[str]:
     text = re.sub(r"\s*// Screenshot.*?\n\s*await page\.screenshot\(\{.*?\}\);", "", text, flags=re.S)
     text = text.replace(base, "")
     text = text.replace("'[secret:card]'", "testCard")
+    # Irreversible buttons get an exact name match, so a renamed "Place order (2 items)" fails loudly.
+    text = text.replace("{ name: 'Place order' }", "{ name: 'Place order', exact: true }")
     return [ln.strip() for ln in text.strip().splitlines() if ln.strip()]
 
 

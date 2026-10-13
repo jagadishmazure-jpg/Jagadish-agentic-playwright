@@ -1,11 +1,12 @@
 import { expect as pwExpect } from '@playwright/test';
 import { expect, test } from '../../framework/fixtures';
+import { delay } from '../../framework/utils/actions';
 
 test.describe('assertions and auto-waiting', () => {
   test('web-first assertions retry; one-shot reads do not', async ({ page }) => {
-    await page.route('**/api/products?*', async (route) => {
-      await new Promise((r) => setTimeout(r, 600)); // the list arrives late
-      await route.continue();
+    await page.route('**/api/products?*', async (slow) => {
+      await delay(600); // the list arrives late
+      await slow.continue();
     });
     await page.goto('/catalog');
     const count = page.getByTestId('result-count');

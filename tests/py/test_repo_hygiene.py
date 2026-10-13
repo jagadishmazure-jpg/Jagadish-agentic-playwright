@@ -123,4 +123,4 @@ def test_no_secrets_or_storage_state_committed():
 
 def test_security_policy_has_a_fallback_contact():
     t = flat(ROOT / "SECURITY.md")
-    assert "Report a vulnerability" in t and "@users.noreply.github.com" in t
+    assert "Report a vulnerability" in t and "Security contact request" in t

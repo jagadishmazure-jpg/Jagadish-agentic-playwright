@@ -3,23 +3,23 @@ import { BasePage } from './BasePage';
 
 export class LoginPage extends BasePage {
   readonly path = '/login';
-  readonly username: Locator;
-  readonly password: Locator;
+  readonly userField: Locator;
+  readonly passField: Locator;
   readonly otp: Locator;
   readonly error: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.username = page.getByLabel('Username');
-    this.password = page.getByLabel('Password');
+    this.userField = page.getByLabel('Username');
+    this.passField = page.getByLabel('Password');
     this.otp = page.getByLabel('One-time code');
     this.error = page.getByRole('alert').filter({ hasText: /\S/ });
   }
 
   /** Step 1: credentials. Returns the OTP challenge id the app issued (read from the login response). */
-  async submitCredentials(username: string, password: string): Promise<string> {
-    await this.username.fill(username);
-    await this.password.fill(password);
+  async submitCredentials(user: string, secret: string): Promise<string> {
+    await this.userField.fill(user);
+    await this.passField.fill(secret);
     // Start waiting before the click so the response cannot be missed.
     const [resp] = await Promise.all([
       this.page.waitForResponse((r) => r.url().endsWith('/api/auth/login')),

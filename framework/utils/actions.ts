@@ -25,3 +25,6 @@ export async function readTable(table: Locator): Promise<Record<string, string>[
     return Array.from(t.querySelectorAll('tbody tr'), (tr) => Object.fromEntries(Array.from(tr.querySelectorAll('td'), (td, i) => [heads[i], (td.textContent ?? '').trim()])));
   });
 }
+
+/** Resolve after `ms` milliseconds. Only for simulating a slow server inside a route handler, never as a wait in a test. */
+export const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));

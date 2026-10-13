@@ -14,6 +14,6 @@ test('generated: seed 1 purchase', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Address' }).fill('12 Example Lane');
   await page.locator('iframe[title="Payment"]').contentFrame().getByRole('textbox', { name: 'Card number' }).fill(testCard);
   await page.locator('iframe[title="Payment"]').contentFrame().getByRole('button', { name: 'Add card' }).click();
-  await page.getByRole('button', { name: 'Place order' }).click();
+  await page.getByRole('button', { name: 'Place order', exact: true }).click();
   await expect(page.locator('#result')).toHaveText(/Order placed: LK-\d{4}/);
 });

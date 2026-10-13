@@ -1,5 +1,6 @@
 import path from 'node:path';
 import { expect, test } from '../../framework/fixtures';
+import { delay } from '../../framework/utils/actions';
 
 const HAR = path.join(__dirname, '..', 'fixtures', 'products.har');
 
@@ -45,9 +46,9 @@ test.describe('network control', () => {
   });
 
   test('simulate a slow network and assert a latency budget', async ({ page }) => {
-    await page.route('**/api/products?*', async (route) => {
-      await new Promise((r) => setTimeout(r, 800));
-      await route.continue();
+    await page.route('**/api/products?*', async (slow) => {
+      await delay(800);
+      await slow.continue();
     });
     const t0 = Date.now();
     await page.goto('/catalog');
