@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in · Larkspur Outfitters</title><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/static/site.css"></head>
+<body>
+<main>
+<h1>Sign in</h1>
+<form id="login-form" class="card" novalidate>
+  <label for="username">Username</label><input id="username" name="username" autocomplete="username" required>
+  <label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required>
+  <p><button type="submit">Continue</button></p>
+  <p role="alert" class="error" id="login-error"></p>
+</form>
+<form id="otp-form" class="card" hidden>
+  <p>We sent a 6-digit code to your phone.</p>
+  <label for="otp">One-time code</label><input id="otp" name="otp" inputmode="numeric" maxlength="6" required>
+  <p><button type="submit">Verify</button></p>
+  <p role="alert" class="error" id="otp-error"></p>
+</form>
+</main>
+<script src="/static/site.js"></script>
+<script>
+let challenge = null;
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const body = { username: username.value, password: password.value };
+  const r = await fetch('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  if (!r.ok) { document.getElementById('login-error').textContent = 'Wrong username or password.'; return; }
+  challenge = (await r.json()).challenge;
+  document.getElementById('otp-form').dataset.challenge = challenge;
+  document.getElementById('login-form').hidden = true;
+  document.getElementById('otp-form').hidden = false;
+  document.getElementById('otp').focus();
+});
+document.getElementById('otp-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const r = await fetch('/api/auth/otp', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ challenge, code: otp.value }) });
+  if (!r.ok) { document.getElementById('otp-error').textContent = 'That code did not work.'; return; }
+  location.href = '/account';
+});
+</script>
+</body>
+</html>

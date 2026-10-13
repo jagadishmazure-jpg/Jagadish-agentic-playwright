@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Payment</title><link rel="stylesheet" href="/static/site.css"></head>
+<body style="background:#fff;padding:.5rem">
+<form id="card-form">
+  <label for="card">Card number</label><input id="card" inputmode="numeric" autocomplete="cc-number">
+  <button type="submit">Add card</button> <span role="status" id="card-status"></span>
+</form>
+<script>
+document.getElementById('card-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const r = await fetch('/api/payment/tokenize', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ card: document.getElementById('card').value }) });
+  const s = document.getElementById('card-status');
+  if (!r.ok) { s.textContent = 'Card declined'; return; }
+  const j = await r.json(); s.textContent = 'Card accepted';
+  parent.postMessage({ token: j.token }, location.origin);
+});
+</script></body></html>

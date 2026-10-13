@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checkout · Larkspur Outfitters</title><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/static/site.css"></head>
+<body>
+<main>
+<h1>Checkout</h1>
+<form id="checkout" class="card">
+  <label for="fullname">Full name</label><input id="fullname" required>
+  <label for="address">Address</label><input id="address" required>
+  <h2>Payment</h2>
+  <iframe id="pay" title="Payment" src="/static/payment-frame.html" style="width:100%;height:150px;border:1px solid #d7ddd3"></iframe>
+  <p class="muted" id="pay-status">Card not added yet.</p>
+  <p><button type="submit" id="place">Place order</button></p>
+  <p role="status" id="result"></p>
+</form>
+</main>
+<script src="/static/site.js"></script>
+<script>
+let token = null;
+window.addEventListener('message', (e) => { if (e.origin !== location.origin) return; if (e.data && e.data.token) { token = e.data.token; document.getElementById('pay-status').textContent = 'Card added.'; } });
+document.getElementById('checkout').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!token) { result.textContent = 'Add a card first.'; return; }
+  const r = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: fullname.value, address: address.value, items: cart.get(), payment_token: token }) });
+  const j = await r.json();
+  result.textContent = r.ok ? 'Order placed: ' + j.order_id : 'Could not place order: ' + (j.detail || r.status);
+  if (r.ok) cart.set([]);
+});
+</script>
+</body>
+</html>

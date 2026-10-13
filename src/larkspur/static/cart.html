@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cart · Larkspur Outfitters</title><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/static/site.css"></head>
+<body>
+<main>
+<h1>Your cart</h1>
+<table aria-label="Cart items"><thead><tr><th>Item</th><th>Price</th><th></th></tr></thead><tbody id="rows"></tbody></table>
+<p>Total: <strong data-testid="cart-total">$0.00</strong></p>
+<p><a class="btn" href="/checkout" id="to-checkout">Checkout</a></p>
+</main>
+<script src="/static/site.js"></script>
+<script>
+async function render() {
+  const items = cart.get();
+  const all = await (await fetch('/api/products')).json();
+  const by = Object.fromEntries(all.map(p => [p.sku, p]));
+  let total = 0;
+  rows.innerHTML = items.map((s, i) => { const p = by[s]; if (!p) return ''; total += p.price;
+    return '<tr><td>' + esc(p.name) + '</td><td>$' + p.price.toFixed(2) + '</td><td><button class="secondary" data-i="' + i + '" aria-label="Remove ' + esc(p.name) + '">Remove</button></td></tr>'; }).join('');
+  document.querySelector('[data-testid=cart-total]').textContent = '$' + total.toFixed(2);
+}
+rows.addEventListener('click', (e) => { const b = e.target.closest('button[data-i]'); if (!b) return;
+  if (!confirm('Remove this item from your cart?')) return;
+  const c = cart.get(); c.splice(Number(b.dataset.i), 1); cart.set(c); render(); });
+render();
+</script>
+</body>
+</html>

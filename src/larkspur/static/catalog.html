@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catalog · Larkspur Outfitters</title><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/static/site.css"></head>
+<body>
+<main>
+<h1>Catalog</h1>
+<form id="filters" class="card" aria-label="Filters">
+  <label for="category">Category</label>
+  <select id="category" name="category">
+    <option value="">All</option><option value="jackets">Jackets</option><option value="boots">Boots</option>
+    <option value="packs">Packs</option><option value="tents">Tents</option>
+  </select>
+  <label><input type="checkbox" id="in-stock" name="in_stock"> In stock only</label>
+  <fieldset><legend>Sort by</legend>
+    <label><input type="radio" name="sort" value="name" checked> Name</label>
+    <label><input type="radio" name="sort" value="price"> Price</label>
+    <label><input type="radio" name="sort" value="rating"> Rating</label>
+  </fieldset>
+</form>
+<p class="muted"><span data-testid="result-count">0</span> products</p>
+<div class="grid" id="results" role="list" aria-label="Products"></div>
+<h2>All accessories</h2>
+<ul id="feed" aria-label="Accessory feed"></ul>
+<p id="feed-end" class="muted" hidden>You have reached the end.</p>
+<div id="sentinel" style="height:1px"></div>
+</main>
+<script src="/static/site.js"></script>
+<script>
+async function load() {
+  const p = new URLSearchParams();
+  if (category.value) p.set('category', category.value);
+  if (document.getElementById('in-stock').checked) p.set('in_stock', 'true');
+  p.set('sort', document.querySelector('input[name=sort]:checked').value);
+  const items = await (await fetch('/api/products?' + p)).json();
+  document.querySelector('[data-testid=result-count]').textContent = String(items.length);
+  results.innerHTML = items.map(i => '<article class="card" role="listitem" data-testid="product-card"><h3><a href="/product?sku=' + esc(i.sku) + '">' + esc(i.name) + '</a></h3>' +
+    '<p><span data-testid="price">$' + i.price.toFixed(2) + '</span> · ' + (i.in_stock ? 'In stock' : 'Out of stock') + '</p>' +
+    '<button type="button" ' + (i.in_stock ? '' : 'disabled ') + 'data-sku="' + esc(i.sku) + '" aria-label="Add ' + esc(i.name) + ' to cart">Add to cart</button></article>').join('');
+}
+results.addEventListener('click', (e) => { const b = e.target.closest('button[data-sku]'); if (b) cart.add(b.dataset.sku); });
+document.getElementById('filters').addEventListener('change', load);
+load();
+let page = 0, more = true, busy = false;
+async function next() {
+  if (!more || busy) return; busy = true; page += 1;
+  const r = await (await fetch('/api/catalog?page=' + page + '&size=12')).json();
+  feed.insertAdjacentHTML('beforeend', r.items.map(i => '<li data-testid="feed-item">' + esc(i.name) + '</li>').join(''));
+  more = r.has_more; if (!more) document.getElementById('feed-end').hidden = false; busy = false;
+}
+new IntersectionObserver((es) => { if (es.some(e => e.isIntersecting)) next(); }).observe(sentinel);
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "name": "agentic-playwright",
+  "version": "1.0.0",
+  "description": "Playwright in agentic AI: a classic QA framework, QA for an AI agent app, and Playwright as an agent's hands.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jagadishmazure-jpg/Jagadish-agentic-playwright.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jagadishmazure-jpg/Jagadish-agentic-playwright/issues"
+  },
+  "homepage": "https://github.com/jagadishmazure-jpg/Jagadish-agentic-playwright#readme",
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/mcp": "0.0.83",
+    "@playwright/test": "1.64.0",
+    "@types/node": "24.19.2",
+    "typescript": "5.9.3"
+  }
+}

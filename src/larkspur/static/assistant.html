@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Returns assistant · Larkspur Outfitters</title><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/static/site.css"></head>
+<body>
+<main>
+<h1>Returns assistant</h1>
+<p class="muted">Ask about orders, the returns policy, products or refunds. Answers are generated; a returns specialist approves every refund.</p>
+<div class="chat" id="log" role="log" aria-live="polite" aria-label="Conversation"></div>
+<form id="ask" class="card">
+  <label for="q">Your message</label><input id="q" style="width:100%" autocomplete="off" required>
+  <p><button type="submit" id="send">Send</button> <span id="state" class="muted" role="status"></span></p>
+</form>
+<dialog id="approval" aria-labelledby="approval-title">
+  <h2 id="approval-title">Refund needs approval</h2>
+  <p id="approval-text"></p>
+  <p class="muted" id="approval-status">Waiting for a returns specialist.</p>
+  <p><button class="secondary" id="cancel-refund">Cancel request</button> <button id="close-approval">Close</button></p>
+</dialog>
+</main>
+<script src="/static/site.js"></script>
+<script>
+const seed = Number(new URLSearchParams(location.search).get('seed') || '0');
+let current = null;
+function add(cls, html) { const d = document.createElement('div'); d.className = 'msg ' + cls; d.innerHTML = html; log.appendChild(d); return d; }
+document.getElementById('ask').addEventListener('submit', async (e) => {
+  e.preventDefault(); const text = q.value; q.value = '';
+  add('user', esc(text)); const bot = add('bot', ''); bot.setAttribute('data-testid', 'answer');
+  const body = document.createElement('p'); body.setAttribute('data-testid', 'answer-text'); bot.appendChild(body);
+  state.textContent = 'Thinking…'; send.disabled = true;
+  const r = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: text, seed }) });
+  const reader = r.body.getReader(); const dec = new TextDecoder(); let buf = '';
+  for (;;) { const { value, done } = await reader.read(); if (done) break; buf += dec.decode(value, { stream: true });
+    let i; while ((i = buf.indexOf('\n\n')) >= 0) { const line = buf.slice(0, i); buf = buf.slice(i + 2); if (!line.startsWith('data: ')) continue; handle(JSON.parse(line.slice(6)), bot, body); } }
+  send.disabled = false;
+});
+function handle(ev, bot, body) {
+  if (ev.type === 'token') { body.textContent += ev.text; state.textContent = 'Answering…'; }
+  else if (ev.type === 'tool_call') { const t = document.createElement('div'); t.className = 'tool'; t.setAttribute('data-testid', 'tool-call'); t.dataset.tool = ev.name; t.textContent = 'Used tool: ' + ev.name; bot.insertBefore(t, body); }
+  else if (ev.type === 'tool_result') { const t = bot.querySelector('[data-tool="' + ev.name + '"]:not([data-done])'); if (t) { t.dataset.done = '1'; t.textContent += ' → ' + ev.summary; } }
+  else if (ev.type === 'citation') { let c = bot.querySelector('.cites'); if (!c) { c = document.createElement('p'); c.className = 'cites'; c.setAttribute('aria-label', 'Sources'); bot.appendChild(c); }
+    c.insertAdjacentHTML('beforeend', '<span class="cite" data-testid="citation">[' + esc(ev.id) + '] ' + esc(ev.title) + '</span>'); }
+  else if (ev.type === 'notice') { const n = document.createElement('p'); n.className = 'notice'; n.setAttribute('data-testid', 'notice'); n.textContent = ev.text; bot.appendChild(n); }
+  else if (ev.type === 'approval_required') { current = ev.id; document.getElementById('approval-text').textContent = 'Refund of $' + ev.amount.toFixed(2) + ' for order ' + ev.order_id + ' (request ' + ev.id + ').';
+    document.getElementById('approval-status').textContent = 'Waiting for a returns specialist.'; approval.showModal(); poll(ev.id); }
+  else if (ev.type === 'done') { state.textContent = 'Done'; bot.dataset.latency = String(ev.latency_ms); bot.setAttribute('data-done', 'true'); }
+}
+async function poll(id) { for (let k = 0; k < 600; k++) { const all = await (await fetch('/api/approvals')).json(); const a = all.find(x => x.id === id);
+  if (a && a.status !== 'pending') { document.getElementById('approval-status').textContent = a.status === 'approved' ? 'Approved: refund issued.' : 'Request cancelled.'; return; }
+  await new Promise(r => setTimeout(r, 250)); } }
+document.getElementById('cancel-refund').onclick = async () => { if (current) await fetch('/api/approvals/' + current, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ approve: false }) }); };
+document.getElementById('close-approval').onclick = () => approval.close();
+</script>
+</body>
+</html>

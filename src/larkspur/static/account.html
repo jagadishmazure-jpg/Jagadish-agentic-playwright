@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Account · Larkspur Outfitters</title><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/static/site.css"></head>
+<body>
+<main>
+<h1>Your account</h1>
+<p id="welcome" aria-live="polite">Loading…</p>
+<section class="card"><h2>Recent orders</h2><ul id="recent"></ul></section>
+<p><button class="secondary" id="logout">Sign out</button></p>
+</main>
+<script src="/static/site.js"></script>
+<script>
+(async () => {
+  const r = await fetch('/api/me');
+  if (!r.ok) { location.href = '/login'; return; }
+  const me = await r.json();
+  document.getElementById('welcome').textContent = 'Welcome back, ' + me.display;
+  const orders = await (await fetch('/api/orders')).json();
+  document.getElementById('recent').innerHTML = orders.map(o => '<li>' + esc(o.order_id) + ' · ' + esc(o.status) + '</li>').join('');
+})();
+document.getElementById('logout').onclick = async () => { await fetch('/api/auth/logout', { method: 'POST' }); location.href = '/'; };
+</script>
+</body>
+</html>

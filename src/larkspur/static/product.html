@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product · Larkspur Outfitters</title><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/static/site.css"></head>
+<body>
+<main>
+<article id="product" aria-busy="true">
+  <h1 id="name">Loading…</h1>
+  <p><span id="price"></span> · <lk-rating id="rating"></lk-rating></p>
+  <p><button id="add">Add to cart</button> <button class="secondary" id="size-guide">Size guide</button></p>
+  <section><h2>Reviews</h2><ul id="reviews"></ul></section>
+</article>
+</main>
+<script src="/static/site.js"></script>
+<script>
+customElements.define('lk-rating', class extends HTMLElement {
+  static get observedAttributes() { return ['value']; }
+  constructor() { super(); this.attachShadow({ mode: 'open' }).innerHTML = '<span part="stars" role="img"></span> <button type="button">Helpful?</button><output></output>'; 
+    this.shadowRoot.querySelector('button').onclick = () => { this.shadowRoot.querySelector('output').textContent = 'Thanks for the feedback'; }; }
+  attributeChangedCallback() { const v = this.getAttribute('value'); const s = this.shadowRoot.querySelector('span'); s.textContent = v + ' / 5'; s.setAttribute('aria-label', 'Rated ' + v + ' out of 5'); }
+});
+const sku = new URLSearchParams(location.search).get('sku') || 'LK-JKT-001';
+(async () => {
+  const r = await fetch('/api/products/' + encodeURIComponent(sku));
+  if (!r.ok) { document.getElementById('name').textContent = 'Product not found'; return; }
+  const p = await r.json();
+  document.getElementById('name').textContent = p.name;
+  document.getElementById('price').textContent = '$' + p.price.toFixed(2);
+  document.getElementById('rating').setAttribute('value', String(p.rating));
+  document.getElementById('reviews').innerHTML = p.reviews.map(v => '<li class="review"><strong>' + esc(v.author) + '</strong> (' + v.stars + '★): ' + esc(v.text) + '</li>').join('') || '<li>No reviews yet.</li>';
+  document.getElementById('product').setAttribute('aria-busy', 'false');
+})();
+document.getElementById('add').onclick = () => cart.add(sku);
+document.getElementById('size-guide').onclick = () => window.open('/static/size-guide.html', 'sizeguide', 'width=480,height=520');
+</script>
+</body>
+</html>

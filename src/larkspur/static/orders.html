@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orders · Larkspur Outfitters</title><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/static/site.css"></head>
+<body>
+<main>
+<h1>Orders</h1>
+<p id="orders-msg" class="muted">Loading…</p>
+<table aria-label="Orders" id="orders-table"><thead><tr><th><button class="secondary" id="sort-id">Order</button></th><th>Items</th><th><button class="secondary" id="sort-total">Total</button></th><th>Status</th></tr></thead><tbody></tbody></table>
+</main>
+<script src="/static/site.js"></script>
+<script>
+let rows = [];
+function draw() { document.querySelector('#orders-table tbody').innerHTML = rows.map(o => '<tr><td>' + esc(o.order_id) + '</td><td>' + o.items.length + '</td><td>$' + o.total.toFixed(2) + '</td><td>' + esc(o.status) + '</td></tr>').join(''); }
+(async () => { const r = await fetch('/api/orders'); const m = document.getElementById('orders-msg');
+  if (!r.ok) { m.textContent = 'Please sign in to see your orders.'; return; }
+  rows = await r.json(); m.textContent = rows.length + ' orders'; draw(); })();
+document.getElementById('sort-total').onclick = () => { rows.sort((a, b) => b.total - a.total); draw(); };
+document.getElementById('sort-id').onclick = () => { rows.sort((a, b) => a.order_id.localeCompare(b.order_id)); draw(); };
+</script>
+</body>
+</html>

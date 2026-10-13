@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Approval console · Larkspur Outfitters</title><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/static/site.css"></head>
+<body>
+<main>
+<h1>Refund approvals</h1>
+<p class="muted">Returns specialists only.</p>
+<table aria-label="Pending approvals"><thead><tr><th>Request</th><th>Order</th><th>Amount</th><th>Status</th><th>Decision</th></tr></thead><tbody id="queue"></tbody></table>
+<p role="alert" id="console-msg" class="error"></p>
+</main>
+<script src="/static/site.js"></script>
+<script>
+async function draw() { const all = await (await fetch('/api/approvals')).json();
+  queue.innerHTML = all.map(a => '<tr><td>' + esc(a.id) + '</td><td>' + esc(a.order_id) + '</td><td>$' + a.amount.toFixed(2) + '</td><td>' + esc(a.status) + '</td><td>' +
+    (a.status === 'pending' ? '<button data-id="' + esc(a.id) + '" data-ok="1">Approve ' + esc(a.id) + '</button> <button class="secondary" data-id="' + esc(a.id) + '" data-ok="0">Deny ' + esc(a.id) + '</button>' : '') + '</td></tr>').join(''); }
+queue.addEventListener('click', async (e) => { const b = e.target.closest('button[data-id]'); if (!b) return;
+  const r = await fetch('/api/approvals/' + b.dataset.id, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ approve: b.dataset.ok === '1' }) });
+  document.getElementById('console-msg').textContent = r.ok ? '' : 'Not allowed: ' + (await r.json()).detail; draw(); });
+draw();
+</script>
+</body>
+</html>

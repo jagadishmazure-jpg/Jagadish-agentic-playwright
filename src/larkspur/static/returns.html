@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Returns · Larkspur Outfitters</title><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/static/site.css"></head>
+<body>
+<main>
+<h1>Start a return</h1>
+<form id="return-form" class="card">
+  <label for="order-id">Order number</label><input id="order-id" placeholder="LK-1003" required>
+  <label for="reason">Reason</label>
+  <select id="reason" required><option value="">Choose…</option><option value="too-small">Too small</option><option value="too-large">Too large</option><option value="faulty">Faulty</option><option value="changed-mind">Changed my mind</option></select>
+  <label for="photo">Photo of the item (optional)</label><input id="photo" type="file" accept="image/*,.txt">
+  <p id="photo-info" class="muted"></p>
+  <p><button type="submit" id="submit-return">Submit return</button></p>
+  <p role="status" id="return-result"></p>
+  <p><a id="label-link" hidden download>Download return label</a></p>
+</form>
+<section class="card"><h2>Rank what matters to you</h2>
+<p class="muted">Drag to reorder.</p>
+<ul class="dropzone" id="priorities" aria-label="Priorities">
+  <li draggable="true" data-testid="prio">Fast refund</li><li draggable="true" data-testid="prio">Free label</li><li draggable="true" data-testid="prio">Store credit bonus</li>
+</ul></section>
+<div class="card" id="promo" hidden><p>Members get free return labels.</p></div>
+</main>
+<script src="/static/site.js"></script>
+<script>
+const v = new URLSearchParams(location.search).get('v');
+if (v === '1') document.getElementById('submit-return').textContent = 'Send return request';
+if (v === '2') document.getElementById('order-id').placeholder = 'Order number, e.g. LK-1003';
+let photoName = null;
+photo.addEventListener('change', async () => {
+  const f = photo.files[0]; if (!f) return;
+  const fd = new FormData(); fd.append('file', f);
+  const r = await (await fetch('/api/upload', { method: 'POST', body: fd })).json();
+  photoName = r.filename; document.getElementById('photo-info').textContent = 'Uploaded ' + r.filename + ' (' + r.size + ' bytes)';
+});
+document.getElementById('return-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const r = await fetch('/api/returns', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ order_id: document.getElementById('order-id').value, reason: reason.value, photo: photoName }) });
+  const j = await r.json(); const out = document.getElementById('return-result');
+  if (!r.ok) { out.textContent = 'Return not created: ' + j.detail; return; }
+  out.textContent = 'Return ' + j.return_id + ' created for ' + j.order_id;
+  const a = document.getElementById('label-link'); a.href = '/api/returns/' + j.return_id + '/label.csv'; a.hidden = false;
+});
+let dragged = null;
+priorities.addEventListener('dragstart', (e) => { dragged = e.target; });
+priorities.addEventListener('dragover', (e) => e.preventDefault());
+priorities.addEventListener('drop', (e) => { e.preventDefault(); const t = e.target.closest('li'); if (t && dragged && t !== dragged) priorities.insertBefore(dragged, t); });
+</script>
+</body>
+</html>
