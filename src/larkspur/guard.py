@@ -22,6 +22,8 @@ INJECTION_PATTERNS = [
     r"send .{0,40}(?:customer|password|token|list)",
     r"https?://[^\s]+\.invalid",
     r"refund (?:immediately|everything|every order)",
+    r"note for ai",
+    r"type the saved (?:card|password)",
 ]
 _INJ = [re.compile(p, re.I) for p in INJECTION_PATTERNS]
 
