@@ -9,7 +9,9 @@ test.describe('locators', () => {
   test('user-facing locators: role, label, text, test id, placeholder @cross', async ({ page }) => {
     await expect(page.getByRole('heading', { level: 1, name: 'Catalog' })).toBeVisible();
     await expect(page.getByLabel('Category')).toHaveValue('');
-    await expect(page.getByText('Ridgeline Rain Shell')).toBeVisible();
+    // Scoped to the product grid: the accessory feed below can render the same name once it scrolls in.
+    // Unscoped, this line was a real intermittent strict-mode failure (see docs/flaky-test-playbook.md).
+    await expect(page.getByRole('list', { name: 'Products' }).getByText('Ridgeline Rain Shell')).toBeVisible();
     await expect(page.getByTestId('product-card')).toHaveCount(10);
     await page.goto('/returns');
     await expect(page.getByPlaceholder('LK-1003')).toBeEditable();
