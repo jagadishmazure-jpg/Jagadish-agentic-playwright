@@ -104,7 +104,7 @@ WORDING = {
     "eligible": [
         "Order {order} was delivered {days} days ago, which is inside the {window}-day window, so it qualifies for a refund of ${amount:.2f}. A returns specialist needs to approve it first.",
         "{order} qualifies: it arrived {days} days ago (the window is {window} days). I have asked a returns specialist to approve a ${amount:.2f} refund.",
-        "This one is eligible. Delivery was {days} days ago, within {window} days, so a ${amount:.2f} refund is waiting for specialist approval.",
+        "Order {order} is eligible. Delivery was {days} days ago, within {window} days, so a ${amount:.2f} refund is waiting for specialist approval.",
     ],
     "ineligible": [
         "Order {order} was delivered {days} days ago, which is outside the {window}-day window, so I can't refund it. Store credit may apply for a manufacturing fault.",

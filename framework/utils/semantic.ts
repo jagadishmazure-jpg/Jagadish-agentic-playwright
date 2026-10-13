@@ -91,7 +91,7 @@ export const rubrics = {
   ],
   ineligibleRefund: (order: string): Criterion[] => [
     { name: 'mentions the order', exact: order },
-    { name: 'declines', anyOf: ["can't", 'cannot', 'not possible', 'outside', 'past the'] },
+    { name: 'declines', anyOf: ["can't", 'cannot', /(?:not|isn't) possible/i, 'outside', 'past the'] },
     { name: 'mentions the window', anyOf: ['window', 'limit', '30'] },
     { name: 'offers an alternative', anyOf: ['store credit', 'fault'] },
   ],
