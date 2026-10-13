@@ -36,7 +36,7 @@ handsagent bench --seeds 50                  # browser-agent benchmark (needs th
 |---|---|---|
 | Playwright, default CI projects (setup, api, chromium, healing, generated, visual) | 148 | `tests/` |
 | Playwright, cross-browser runs of `@cross`/`@mobile` tests (Firefox, WebKit, mobile) | 25 | same specs, extra projects |
-| pytest | 133 | `tests/py/` |
+| pytest | 135 | `tests/py/` |
 
 ## Results
 
