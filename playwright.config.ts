@@ -8,7 +8,8 @@ import { env } from './framework/config/env';
  *   chromium     the main UI suite (framework + agent-app); depends on setup
  *   firefox / webkit / mobile   the same specs tagged @cross, kept out of the default run (testProject.default: false)
  *   visual       screenshot comparisons; run inside the official Docker image so pixels match CI
- *   healing      the test-agent heal demo (a deliberately broken locator); never part of the default run
+ *   healing      the offline heal benchmark (deliberately broken locators); not in the default run
+ *   generated    tests generated from recorded browser-agent runs (Playwright MCP codegen); not in the default run
  *
  * CI: blob reporter per shard, merged afterwards into HTML + JUnit (see .github/workflows/e2e.yml).
  */
@@ -54,7 +55,7 @@ export default defineConfig({
     {
       name: 'chromium',
       testDir: './tests',
-      testIgnore: [/api\//, /visual\//, /setup\//, /healing\//],
+      testIgnore: [/api\//, /visual\//, /setup\//, /healing\//, /generated\//],
       use: { ...devices['Desktop Chrome'] },
       dependencies: ['setup'],
     },
@@ -63,5 +64,6 @@ export default defineConfig({
     { name: 'mobile', grep: /@mobile/, use: { ...devices['Pixel 7'] }, dependencies: ['setup'], testIgnore: [/api\//, /visual\//, /healing\//], default: false },
     { name: 'visual', testDir: './tests/visual', use: { ...devices['Desktop Chrome'] }, default: false },
     { name: 'healing', testDir: './tests/healing', use: { ...devices['Desktop Chrome'] }, default: false },
+    { name: 'generated', testDir: './tests/generated', use: { ...devices['Desktop Chrome'] }, default: false },
   ],
 });

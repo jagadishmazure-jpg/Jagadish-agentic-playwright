@@ -50,3 +50,6 @@ export function loadEnv(name = (process.env.TEST_ENV ?? 'local') as EnvName): En
 }
 
 export const env = loadEnv();
+
+/** The public test card number that the demo payment frame accepts (a well-known test value, not a secret). */
+export const testCard = process.env.LK_TEST_CARD ?? '4242 4242 4242 4242';

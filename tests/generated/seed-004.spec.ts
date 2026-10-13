@@ -1,0 +1,12 @@
+// GENERATED from a recorded browser-agent run (Playwright MCP codegen) by scripts/collect_generated.py.
+// Source: benchmark seed 4, task return. Only the final assertion was added.
+import { expect, test } from '@playwright/test';
+
+test('generated: seed 4 return', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Returns', exact: true }).click();
+  await page.getByRole('textbox', { name: 'Order number' }).fill('LK-1003');
+  await page.getByLabel('Reason').selectOption('Too small');
+  await page.getByRole('button', { name: 'Submit return' }).click();
+  await expect(page.getByRole('status')).toHaveText(/Return RMA-\d{4} created for LK-1003/);
+});

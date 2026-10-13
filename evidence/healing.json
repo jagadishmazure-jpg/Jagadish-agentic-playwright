@@ -1,0 +1,244 @@
+{
+  "healer": "offline rule-based healer (framework/healing/healer.ts), not Playwright's LLM healer agent",
+  "cases": 20,
+  "broken_locator_cases": 16,
+  "removed_element_cases": 4,
+  "correct_heal": 12,
+  "missed_heal": 4,
+  "false_heal": 1,
+  "correct_refusal": 3,
+  "results": [
+    {
+      "case": "/returns button \"Submit\"",
+      "outcome": "correct heal",
+      "proposal": {
+        "healed": true,
+        "role": "button",
+        "originalName": "Submit",
+        "newName": "Submit return",
+        "score": 0.5641025641025641,
+        "reason": "best candidate above threshold"
+      }
+    },
+    {
+      "case": "/returns button \"Submit the return\"",
+      "outcome": "correct heal",
+      "proposal": {
+        "healed": true,
+        "role": "button",
+        "originalName": "Submit the return",
+        "newName": "Submit return",
+        "score": 0.7823529411764706,
+        "reason": "best candidate above threshold"
+      }
+    },
+    {
+      "case": "/returns?v=1 button \"Submit return\"",
+      "outcome": "missed heal",
+      "proposal": {
+        "healed": false,
+        "role": "button",
+        "originalName": "Submit return",
+        "score": 0.35789473684210527,
+        "reason": "no candidate is similar enough"
+      }
+    },
+    {
+      "case": "/returns textbox \"Order no\"",
+      "outcome": "correct heal",
+      "proposal": {
+        "healed": true,
+        "role": "textbox",
+        "originalName": "Order no",
+        "newName": "Order number",
+        "score": 0.5416666666666666,
+        "reason": "best candidate above threshold"
+      }
+    },
+    {
+      "case": "/returns combobox \"Return reason\"",
+      "outcome": "correct heal",
+      "proposal": {
+        "healed": true,
+        "role": "combobox",
+        "originalName": "Return reason",
+        "newName": "Reason",
+        "score": 0.5641025641025641,
+        "reason": "best candidate above threshold"
+      }
+    },
+    {
+      "case": "/login button \"Continue to sign in\"",
+      "outcome": "missed heal",
+      "proposal": {
+        "healed": false,
+        "role": "button",
+        "originalName": "Continue to sign in",
+        "score": 0.4105263157894737,
+        "reason": "no candidate is similar enough"
+      }
+    },
+    {
+      "case": "/login textbox \"User name\"",
+      "outcome": "missed heal",
+      "proposal": {
+        "healed": false,
+        "role": "textbox",
+        "originalName": "User name",
+        "score": 0.4444444444444444,
+        "reason": "no candidate is similar enough"
+      }
+    },
+    {
+      "case": "/catalog button \"Add Talus Boot to cart\"",
+      "outcome": "correct heal",
+      "proposal": {
+        "healed": true,
+        "role": "button",
+        "originalName": "Add Talus Boot to cart",
+        "newName": "Add Talus Hiking Boot to cart",
+        "score": 0.8338557993730407,
+        "reason": "best candidate above threshold"
+      }
+    },
+    {
+      "case": "/catalog button \"Add Ridgline Rain Shell to cart\"",
+      "outcome": "correct heal",
+      "proposal": {
+        "healed": true,
+        "role": "button",
+        "originalName": "Add Ridgline Rain Shell to cart",
+        "newName": "Add Ridgeline Rain Shell to cart",
+        "score": 0.9010416666666667,
+        "reason": "best candidate above threshold"
+      }
+    },
+    {
+      "case": "/catalog link \"Meadow Tent\"",
+      "outcome": "correct heal",
+      "proposal": {
+        "healed": true,
+        "role": "link",
+        "originalName": "Meadow Tent",
+        "newName": "Meadow 2P Tent",
+        "score": 0.7928571428571429,
+        "reason": "best candidate above threshold"
+      }
+    },
+    {
+      "case": "/checkout button \"Place the order\"",
+      "outcome": "correct heal",
+      "proposal": {
+        "healed": true,
+        "role": "button",
+        "originalName": "Place the order",
+        "newName": "Place order",
+        "score": 0.7666666666666667,
+        "reason": "best candidate above threshold"
+      }
+    },
+    {
+      "case": "/checkout textbox \"Name\"",
+      "outcome": "correct heal",
+      "proposal": {
+        "healed": true,
+        "role": "textbox",
+        "originalName": "Name",
+        "newName": "Full name",
+        "score": 0.5555555555555556,
+        "reason": "best candidate above threshold"
+      }
+    },
+    {
+      "case": "/assistant button \"Send message\"",
+      "outcome": "correct heal",
+      "proposal": {
+        "healed": true,
+        "role": "button",
+        "originalName": "Send message",
+        "newName": "Send",
+        "score": 0.5,
+        "reason": "best candidate above threshold"
+      }
+    },
+    {
+      "case": "/assistant textbox \"Message\"",
+      "outcome": "correct heal",
+      "proposal": {
+        "healed": true,
+        "role": "textbox",
+        "originalName": "Message",
+        "newName": "Your message",
+        "score": 0.625,
+        "reason": "best candidate above threshold"
+      }
+    },
+    {
+      "case": "/orders button \"Order total\"",
+      "outcome": "missed heal",
+      "proposal": {
+        "healed": false,
+        "role": "button",
+        "originalName": "Order total",
+        "score": 0.5606060606060606,
+        "reason": "ambiguous: 'Order' vs 'Total'"
+      }
+    },
+    {
+      "case": "/catalog button \"Add Basecamp 65L Pack to basket\"",
+      "outcome": "correct heal",
+      "proposal": {
+        "healed": true,
+        "role": "button",
+        "originalName": "Add Basecamp 65L Pack to basket",
+        "newName": "Add Basecamp 65L Pack to cart",
+        "score": 0.8521505376344086,
+        "reason": "best candidate above threshold"
+      }
+    },
+    {
+      "case": "/returns button \"Submit return\"",
+      "outcome": "correct refusal",
+      "proposal": {
+        "healed": false,
+        "role": "button",
+        "originalName": "Submit return",
+        "score": 0.0892857142857143,
+        "reason": "no candidate is similar enough"
+      }
+    },
+    {
+      "case": "/checkout button \"Place order\"",
+      "outcome": "correct refusal",
+      "proposal": {
+        "healed": false,
+        "role": "button",
+        "originalName": "Place order",
+        "reason": "no button elements on the page"
+      }
+    },
+    {
+      "case": "/product?sku=LK-JKT-001 button \"Add to cart\"",
+      "outcome": "correct refusal",
+      "proposal": {
+        "healed": false,
+        "role": "button",
+        "originalName": "Add to cart",
+        "score": 0,
+        "reason": "no candidate is similar enough"
+      }
+    },
+    {
+      "case": "/catalog button \"Add Glacier Winter Boot to cart\"",
+      "outcome": "false heal",
+      "proposal": {
+        "healed": true,
+        "role": "button",
+        "originalName": "Add Glacier Winter Boot to cart",
+        "newName": "Add Talus Hiking Boot to cart",
+        "score": 0.6559139784946236,
+        "reason": "best candidate above threshold"
+      }
+    }
+  ]
+}
