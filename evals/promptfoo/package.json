@@ -1,0 +1,19 @@
+{
+  "name": "larkspur-copy-evals",
+  "private": true,
+  "version": "1.0.0",
+  "description": "promptfoo business-rule evals for AI-written product descriptions (fictional Larkspur Outfitters). Offline: a fixture provider, no API keys.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "eval": "node run-evals.mjs",
+    "eval:view": "promptfoo eval -c promptfooconfig.yaml --no-cache --no-write"
+  },
+  "devDependencies": {
+    "js-yaml": "5.4.3",
+    "promptfoo": "0.125.1"
+  }
+}

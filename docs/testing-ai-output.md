@@ -9,6 +9,10 @@ Exact-string assertions break as soon as the wording changes, and AI answers cha
 3. **Meaning.** `framework/utils/semantic.ts` gives a similarity score between the answer and a reference, built from a hashed bag of normalised concepts (offline, deterministic, no model call). `toBeSemanticallyCloseTo` uses a threshold.
 4. **Rubrics.** Small judges that return pass/fail with a reason: `eligibleRefund` (mentions approval, the order, no promise of instant money), `ineligibleRefund` (a clear refusal, several phrasings), `noPii`.
 
+## Generated product copy
+
+For text that must follow brand, catalog and legal rules (not just be similar to a reference), see [promptfoo-business-rules.md](promptfoo-business-rules.md): 7 named promptfoo rules that report the broken rule and the exact text.
+
 ## Making it trustworthy
 
 - **Seeds.** The fake model takes a seed; `semantic.spec.ts` runs several seeds so the assertion is tested against real variation.

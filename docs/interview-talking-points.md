@@ -24,6 +24,10 @@ User-facing locators, no sleeps, isolated data per test, storage-state login, ne
 
 Structure exactly, forbidden content always, meaning with a judge that has a negative control, repeat across seeds. Also test the stream, not just the screen; that is where my masking bug was. ([testing-ai-output.md](testing-ai-output.md))
 
+## How do you test AI-written content against business rules
+
+One promptfoo assertion file per rule, declared once under `defaultTest`, reading product facts from `vars`, returning `FAILED: <rule> → <exact text>` with a metric per rule. On 50 synthetic descriptions every case failed exactly its planted rules, and all 34 failures quoted the text, versus 0 of 34 when the same rules returned bare booleans. ([promptfoo-business-rules.md](promptfoo-business-rules.md))
+
 ## How would you let an agent use a browser safely
 
 Playwright MCP for the hands, a guard in front of every tool: origin allowlist, secrets by reference into matching fields only, human approval for irreversible clicks, step budget, no code-execution tools, full audit. Measured: every injection attempt in the benchmark blocked, 0 secrets reached the model. ([role-3](role-3-browser-agent.md))

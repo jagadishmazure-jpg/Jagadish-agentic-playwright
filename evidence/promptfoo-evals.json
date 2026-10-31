@@ -1,0 +1,81 @@
+{
+  "provider": "fixture-copywriter (offline replay of fixtures/descriptions.json; no model call)",
+  "promptfoo_version": "0.125.1",
+  "cases": 50,
+  "cases_passed": 29,
+  "cases_failed": 21,
+  "errors": 0,
+  "rules": 7,
+  "assertions": 350,
+  "assertions_failed": 34,
+  "per_rule": {
+    "no_intro_cliche": {
+      "passed": 45,
+      "failed": 5,
+      "pass_rate": 0.9
+    },
+    "no_unapproved_superlatives": {
+      "passed": 43,
+      "failed": 7,
+      "pass_rate": 0.86
+    },
+    "material_claim_matches_catalog": {
+      "passed": 41,
+      "failed": 9,
+      "pass_rate": 0.82
+    },
+    "required_care_or_disclaimer": {
+      "passed": 47,
+      "failed": 3,
+      "pass_rate": 0.94
+    },
+    "length_within_limits": {
+      "passed": 47,
+      "failed": 3,
+      "pass_rate": 0.94
+    },
+    "brand_voice": {
+      "passed": 45,
+      "failed": 5,
+      "pass_rate": 0.9
+    },
+    "names_the_product": {
+      "passed": 48,
+      "failed": 2,
+      "pass_rate": 0.96
+    }
+  },
+  "cases_matching_expected_failures": 50,
+  "expectation_mismatches": [],
+  "failure_reasons_in_named_format": 34,
+  "bad_format": [],
+  "sample_failure_reasons": {
+    "c04": [
+      "FAILED: no_intro_cliche → \"Introducing the Ridgeline Rain Shell\"",
+      "FAILED: no_unapproved_superlatives → \"best rain jacket you'll ever own\""
+    ],
+    "c19": [
+      "FAILED: material_claim_matches_catalog → \"Genuine leather\" not in catalog materials [full-grain leather, rubber]",
+      "FAILED: brand_voice → \"TRAIL\"; \"READY\""
+    ],
+    "c25": [
+      "FAILED: length_within_limits → 125 words > max 110; overflow starts at \"have a sternum strap with a small whistle\""
+    ],
+    "c29": [
+      "FAILED: required_care_or_disclaimer → missing \"Keep flames and heat sources away from the tent fabric.\"; last sentence was \"Cook in the vestibule on rainy nights and enjoy the view from the doo…\""
+    ],
+    "c34": [
+      "FAILED: no_intro_cliche → \"Introducing the Harbor Bifold Wallet\"",
+      "FAILED: no_unapproved_superlatives → \"best wallet you'll ever own\"",
+      "FAILED: material_claim_matches_catalog → \"Full-grain leather\" not in catalog materials [top-grain leather, cotton]"
+    ]
+  },
+  "bare": {
+    "cases_failed": 21,
+    "assertions_failed": 34,
+    "failure_reasons_with_evidence": 0,
+    "failure_reasons_starting_custom_function_returned_false": 34,
+    "per_rule_metrics_reported": 0,
+    "sample_reason": "Custom function returned false\nfile://assertions/bare/no_intro_cliche.js"
+  }
+}

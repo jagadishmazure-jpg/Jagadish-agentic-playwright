@@ -47,3 +47,7 @@ flowchart LR
 ## Key decisions
 
 See [adr/](adr/README.md).
+
+## promptfoo copy evals
+
+A separate Node package in `evals/promptfoo/` checks AI-written product descriptions against 7 named business rules. An offline provider replays fixtures, and `scripts/promptfoo_summary.py` turns the results into `evidence/promptfoo-evals.json`. It does not touch the app or the browser agent. Details: [promptfoo-business-rules.md](promptfoo-business-rules.md).

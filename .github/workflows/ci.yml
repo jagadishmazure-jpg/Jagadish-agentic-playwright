@@ -1,4 +1,4 @@
-# Offline CI: lint, unit tests, repo-hygiene tests (workflow pinning, no PDFs, no deploy claims),
+# Offline CI: lint, unit tests, promptfoo copy evals (offline fixture provider), repo-hygiene tests (workflow pinning, no PDFs, no deploy claims),
 # the release gate, doc drift, TypeScript typecheck, Bicep build, SBOM and a secret scan.
 # Nothing here talks to Azure. Actions are pinned to commit SHAs (Dependabot bumps them).
 name: ci
@@ -43,6 +43,30 @@ jobs:
         run: npm run typecheck
       - name: Test list compiles (every project)
         run: npx playwright test --list --project=setup --project=api --project=chromium --project=healing --project=generated --project=visual > /dev/null
+
+  promptfoo:
+    # Business-rule evals for AI-written product copy. Offline: the provider replays fixtures,
+    # so there is no API key, no model call and no cost. The summary --check is the gate.
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run: { working-directory: evals/promptfoo }
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with: { node-version: "22", cache: npm, cache-dependency-path: evals/promptfoo/package-lock.json }
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with: { python-version: "3.12" }
+      - run: npm ci
+      - name: Unit tests for the rule functions (node --test)
+        run: npm test
+      - name: promptfoo eval, named rules and bare booleans (offline)
+        run: npm run eval
+      - name: Every case failed exactly its planted rules; evidence matches
+        run: python ../../scripts/promptfoo_summary.py --check
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always()
+        with: { name: promptfoo-results, path: evals/promptfoo/out/*.json, if-no-files-found: ignore }
 
   bicep:
     runs-on: ubuntu-latest

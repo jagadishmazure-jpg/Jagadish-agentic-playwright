@@ -11,4 +11,5 @@ Honest boundaries of what was built and measured.
 | Injection screen | Pattern-based. It catches the planted examples; a real attacker would vary them. Approval gates are the backstop. |
 | Visual tests | Baselines are valid only inside the pinned Docker image. |
 | Environment | All numbers come from one Linux box (Playwright 1.64.0, Node 20/22, Python 3.12) and GitHub-hosted runners. |
+| Copy evals | promptfoo rules run on 50 self-written synthetic descriptions through an offline fixture provider. 50/50 cases failing exactly their planted rules shows the rules work as designed, not that they catch what a real model writes. Pattern lists miss new wording. |
 | Data | Synthetic; the app is a demo, not a reference for building a shop. Test endpoints are on by design. |

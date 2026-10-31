@@ -8,3 +8,4 @@
 | `0004-healer-refuses-when-unsure.md` | Healer thresholds, no auto-apply |
 | `0005-visual-tests-in-docker.md` | Visual tests in the pinned image |
 | `0006-gated-azure.md` | Azure gated behind DEPLOY_ENABLED |
+| `0007-named-rule-evals.md` | promptfoo copy evals: one named rule per file, offline fixture provider |

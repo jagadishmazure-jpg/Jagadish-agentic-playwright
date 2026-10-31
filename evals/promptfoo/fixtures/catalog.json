@@ -1,0 +1,102 @@
+[
+  {
+    "sku": "LK-JKT-001",
+    "product_name": "Ridgeline Rain Shell",
+    "category": "jackets",
+    "materials": [
+      "recycled nylon",
+      "polyurethane membrane"
+    ],
+    "care_note": "Machine wash cold and hang to dry.",
+    "approved_claims": [
+      "fully waterproof"
+    ]
+  },
+  {
+    "sku": "LK-JKT-002",
+    "product_name": "Cinder Down Parka",
+    "category": "jackets",
+    "materials": [
+      "recycled polyester",
+      "responsibly sourced down"
+    ],
+    "care_note": "Contains animal-derived materials."
+  },
+  {
+    "sku": "LK-JKT-003",
+    "product_name": "Fernwood Fleece",
+    "category": "jackets",
+    "materials": [
+      "recycled polyester fleece"
+    ],
+    "care_note": "Machine wash cold and hang to dry."
+  },
+  {
+    "sku": "LK-BOT-001",
+    "product_name": "Talus Hiking Boot",
+    "category": "boots",
+    "materials": [
+      "full-grain leather",
+      "rubber"
+    ],
+    "care_note": "Brush off dirt and condition the leather after wet hikes."
+  },
+  {
+    "sku": "LK-PCK-001",
+    "product_name": "Switchback 28L Daypack",
+    "category": "packs",
+    "materials": [
+      "ripstop nylon",
+      "aluminum"
+    ],
+    "care_note": "Spot clean only."
+  },
+  {
+    "sku": "LK-TNT-001",
+    "product_name": "Meadow 2P Tent",
+    "category": "tents",
+    "materials": [
+      "ripstop nylon",
+      "aluminum"
+    ],
+    "care_note": "Keep flames and heat sources away from the tent fabric."
+  },
+  {
+    "sku": "LK-ACC-101",
+    "product_name": "Harbor Bifold Wallet",
+    "category": "accessories",
+    "materials": [
+      "top-grain leather",
+      "cotton"
+    ],
+    "care_note": "Spot clean only."
+  },
+  {
+    "sku": "LK-ACC-102",
+    "product_name": "Tarn Merino Beanie",
+    "category": "accessories",
+    "materials": [
+      "merino wool"
+    ],
+    "care_note": "Hand wash cold and lay flat to dry."
+  },
+  {
+    "sku": "LK-ACC-103",
+    "product_name": "Bramble Camp Mug",
+    "category": "accessories",
+    "materials": [
+      "stainless steel"
+    ],
+    "care_note": "Contents may be hot."
+  },
+  {
+    "sku": "LK-ACC-104",
+    "product_name": "Drift Canvas Tote",
+    "category": "accessories",
+    "materials": [
+      "organic cotton canvas",
+      "vegan leather"
+    ],
+    "care_note": "Spot clean only."
+  }
+]

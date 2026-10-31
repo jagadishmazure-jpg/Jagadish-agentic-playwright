@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+# Named-rule evals: each rule lives in its own file, reads the test case's vars, and returns
+# { pass, score, reason } with reason 'FAILED: <rule> → <evidence>'. 'metric' gives one pass rate per rule.
+# Offline: the provider replays fixtures, so no API key and no cost.  Run: npm run eval
+description: Larkspur Outfitters product copy - business-rule evals
+prompts:
+  - file://prompt.txt
+providers:
+  - id: file://provider.js
+    label: fixture-copywriter
+defaultTest:
+  vars:
+    min_words: 35
+    max_words: 110
+  # Every rule is declared once here; all 50 test cases inherit all of them.
+  assert:
+    - type: javascript
+      value: file://assertions/no_intro_cliche.js
+      metric: no_intro_cliche
+    - type: javascript
+      value: file://assertions/no_unapproved_superlatives.js
+      metric: no_unapproved_superlatives
+    - type: javascript
+      value: file://assertions/material_claim_matches_catalog.js
+      metric: material_claim_matches_catalog
+    - type: javascript
+      value: file://assertions/required_care_or_disclaimer.js
+      metric: required_care_or_disclaimer
+    - type: javascript
+      value: file://assertions/length_within_limits.js
+      metric: length_within_limits
+    - type: javascript
+      value: file://assertions/brand_voice.js
+      metric: brand_voice
+    - type: javascript
+      value: file://assertions/names_the_product.js
+      metric: names_the_product
+tests: file://tests.yaml

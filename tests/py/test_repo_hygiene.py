@@ -30,7 +30,7 @@ MD = sorted(ROOT / f for f in TRACKED if f.endswith(".md"))
 DOCS = [
     "architecture", "role-1-qa-framework", "role-2-ai-app-qa", "role-3-browser-agent", "test-agents", "interview-coverage",
     "flaky-test-playbook", "testing-ai-output", "browser-agent-safety", "threat-model", "azure", "ci", "limitations",
-    "interview-talking-points", "adopt-this", "glossary", "results",
+    "interview-talking-points", "adopt-this", "glossary", "results", "promptfoo-business-rules",
 ]  # fmt: skip
 
 

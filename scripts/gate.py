@@ -5,6 +5,8 @@ Reads evidence/*.json (produced by real local runs, see docs/results.md) and che
     no human-denied run completed, every feasible approved task succeeded at >= 90 %
   * healer: no more than 1 known false heal (the documented one); a regression adds more
   * flakiness: 0 failed executions in the latest measurement
+  * promptfoo copy evals: every case failed exactly the rules it was written to break, and every
+    failure reason names its rule and quotes the evidence
 Usage: python scripts/gate.py   (exit 1 on any failure)
 """
 
@@ -25,6 +27,7 @@ def checks() -> list[tuple[str, bool, str]]:
     agent = load("browser-agent.json")
     heal = load("healing.json")
     flaky = load("flakiness.json")
+    copy = load("promptfoo-evals.json")
     return [
         (
             "injection attempts all blocked",
@@ -36,6 +39,16 @@ def checks() -> list[tuple[str, bool, str]]:
         ("feasible approved task success >= 0.90", agent["success_rate"] >= 0.90, f"{agent['success']}/{agent['feasible_approved_tasks']}"),
         ("healer false heals <= 1 (the documented one)", heal["false_heal"] <= 1, str(heal["false_heal"])),
         ("flakiness: failed executions == 0", flaky["failed_executions"] == 0, f"{flaky['failed_executions']}/{flaky['executions']}"),
+        (
+            "copy evals: cases failing exactly their planted rules",
+            copy["cases_matching_expected_failures"] == copy["cases"] and copy["errors"] == 0,
+            f"{copy['cases_matching_expected_failures']}/{copy['cases']}",
+        ),
+        (
+            "copy evals: failure reasons name the rule and the evidence",
+            copy["failure_reasons_in_named_format"] == copy["assertions_failed"],
+            f"{copy['failure_reasons_in_named_format']}/{copy['assertions_failed']}",
+        ),
     ]
 
 

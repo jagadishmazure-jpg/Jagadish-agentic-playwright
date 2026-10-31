@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+# The 'bare boolean' trap, kept only to show the difference: the same rules return true/false,
+# with no metric names, so every failure says only that the custom function returned false.  Run: npm run eval:bare
+description: Larkspur Outfitters product copy - business-rule evals (bare booleans, for comparison)
+prompts:
+  - file://prompt.txt
+providers:
+  - id: file://provider.js
+    label: fixture-copywriter
+defaultTest:
+  vars:
+    min_words: 35
+    max_words: 110
+  # Every rule is declared once here; all 50 test cases inherit all of them.
+  assert:
+    - type: javascript
+      value: file://assertions/bare/no_intro_cliche.js
+    - type: javascript
+      value: file://assertions/bare/no_unapproved_superlatives.js
+    - type: javascript
+      value: file://assertions/bare/material_claim_matches_catalog.js
+    - type: javascript
+      value: file://assertions/bare/required_care_or_disclaimer.js
+    - type: javascript
+      value: file://assertions/bare/length_within_limits.js
+    - type: javascript
+      value: file://assertions/bare/brand_voice.js
+    - type: javascript
+      value: file://assertions/bare/names_the_product.js
+tests: file://tests.yaml

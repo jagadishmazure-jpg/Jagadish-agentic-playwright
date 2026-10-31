@@ -1,0 +1,498 @@
+# 50 test cases: 10 fictional Larkspur Outfitters products x 5 AI-written descriptions (fixtures/descriptions.json).
+# vars carry the product facts the rules read; metadata.expect_fail lists the rules a case is written to break
+# (the rules never read metadata). List-like vars are comma-separated strings on purpose: promptfoo expands
+# a YAML list in vars into one test per item. Keep case_id in step with fixtures/descriptions.json.
+- description: 'c01 Ridgeline Rain Shell: clean; uses the legal-approved claim ''fully waterproof'''
+  vars:
+    case_id: c01
+    sku: LK-JKT-001
+    product_name: Ridgeline Rain Shell
+    materials: recycled nylon, polyurethane membrane
+    care_note: Machine wash cold and hang to dry.
+    approved_claims: fully waterproof
+  metadata:
+    expect_fail: []
+- description: 'c02 Ridgeline Rain Shell: clean'
+  vars:
+    case_id: c02
+    sku: LK-JKT-001
+    product_name: Ridgeline Rain Shell
+    materials: recycled nylon, polyurethane membrane
+    care_note: Machine wash cold and hang to dry.
+    approved_claims: fully waterproof
+  metadata:
+    expect_fail: []
+- description: 'c03 Ridgeline Rain Shell: clean; DWR and PFAS are approved acronyms'
+  vars:
+    case_id: c03
+    sku: LK-JKT-001
+    product_name: Ridgeline Rain Shell
+    materials: recycled nylon, polyurethane membrane
+    care_note: Machine wash cold and hang to dry.
+    approved_claims: fully waterproof
+  metadata:
+    expect_fail: []
+- description: 'c04 Ridgeline Rain Shell: stock opener plus an unapproved superlative'
+  vars:
+    case_id: c04
+    sku: LK-JKT-001
+    product_name: Ridgeline Rain Shell
+    materials: recycled nylon, polyurethane membrane
+    care_note: Machine wash cold and hang to dry.
+    approved_claims: fully waterproof
+  metadata:
+    expect_fail:
+    - no_intro_cliche
+    - no_unapproved_superlatives
+- description: 'c05 Ridgeline Rain Shell: claims ripstop nylon; catalog says recycled nylon'
+  vars:
+    case_id: c05
+    sku: LK-JKT-001
+    product_name: Ridgeline Rain Shell
+    materials: recycled nylon, polyurethane membrane
+    care_note: Machine wash cold and hang to dry.
+    approved_claims: fully waterproof
+  metadata:
+    expect_fail:
+    - material_claim_matches_catalog
+- description: 'c06 Cinder Down Parka: fleece-lined pockets: fleece is not a parka material in the catalog (a subtle miss)'
+  vars:
+    case_id: c06
+    sku: LK-JKT-002
+    product_name: Cinder Down Parka
+    materials: recycled polyester, responsibly sourced down
+    care_note: Contains animal-derived materials.
+  metadata:
+    expect_fail:
+    - material_claim_matches_catalog
+- description: 'c07 Cinder Down Parka: clean'
+  vars:
+    case_id: c07
+    sku: LK-JKT-002
+    product_name: Cinder Down Parka
+    materials: recycled polyester, responsibly sourced down
+    care_note: Contains animal-derived materials.
+  metadata:
+    expect_fail: []
+- description: 'c08 Cinder Down Parka: clean'
+  vars:
+    case_id: c08
+    sku: LK-JKT-002
+    product_name: Cinder Down Parka
+    materials: recycled polyester, responsibly sourced down
+    care_note: Contains animal-derived materials.
+  metadata:
+    expect_fail: []
+- description: 'c09 Cinder Down Parka: superlative and missing the animal-materials disclaimer'
+  vars:
+    case_id: c09
+    sku: LK-JKT-002
+    product_name: Cinder Down Parka
+    materials: recycled polyester, responsibly sourced down
+    care_note: Contains animal-derived materials.
+  metadata:
+    expect_fail:
+    - no_unapproved_superlatives
+    - required_care_or_disclaimer
+- description: 'c10 Cinder Down Parka: goose down not in catalog; sales pressure'
+  vars:
+    case_id: c10
+    sku: LK-JKT-002
+    product_name: Cinder Down Parka
+    materials: recycled polyester, responsibly sourced down
+    care_note: Contains animal-derived materials.
+  metadata:
+    expect_fail:
+    - brand_voice
+    - material_claim_matches_catalog
+- description: 'c11 Fernwood Fleece: clean'
+  vars:
+    case_id: c11
+    sku: LK-JKT-003
+    product_name: Fernwood Fleece
+    materials: recycled polyester fleece
+    care_note: Machine wash cold and hang to dry.
+  metadata:
+    expect_fail: []
+- description: 'c12 Fernwood Fleece: clean'
+  vars:
+    case_id: c12
+    sku: LK-JKT-003
+    product_name: Fernwood Fleece
+    materials: recycled polyester fleece
+    care_note: Machine wash cold and hang to dry.
+  metadata:
+    expect_fail: []
+- description: 'c13 Fernwood Fleece: clean'
+  vars:
+    case_id: c13
+    sku: LK-JKT-003
+    product_name: Fernwood Fleece
+    materials: recycled polyester fleece
+    care_note: Machine wash cold and hang to dry.
+  metadata:
+    expect_fail: []
+- description: 'c14 Fernwood Fleece: stock opener; merino wool not in catalog'
+  vars:
+    case_id: c14
+    sku: LK-JKT-003
+    product_name: Fernwood Fleece
+    materials: recycled polyester fleece
+    care_note: Machine wash cold and hang to dry.
+  metadata:
+    expect_fail:
+    - material_claim_matches_catalog
+    - no_intro_cliche
+- description: 'c15 Fernwood Fleece: far too short for the product page slot'
+  vars:
+    case_id: c15
+    sku: LK-JKT-003
+    product_name: Fernwood Fleece
+    materials: recycled polyester fleece
+    care_note: Machine wash cold and hang to dry.
+  metadata:
+    expect_fail:
+    - length_within_limits
+- description: 'c16 Talus Hiking Boot: clean; generic ''leather'' is covered by full-grain leather'
+  vars:
+    case_id: c16
+    sku: LK-BOT-001
+    product_name: Talus Hiking Boot
+    materials: full-grain leather, rubber
+    care_note: Brush off dirt and condition the leather after wet hikes.
+  metadata:
+    expect_fail: []
+- description: 'c17 Talus Hiking Boot: clean'
+  vars:
+    case_id: c17
+    sku: LK-BOT-001
+    product_name: Talus Hiking Boot
+    materials: full-grain leather, rubber
+    care_note: Brush off dirt and condition the leather after wet hikes.
+  metadata:
+    expect_fail: []
+- description: 'c18 Talus Hiking Boot: clean; ''order your usual size'' is not sales pressure'
+  vars:
+    case_id: c18
+    sku: LK-BOT-001
+    product_name: Talus Hiking Boot
+    materials: full-grain leather, rubber
+    care_note: Brush off dirt and condition the leather after wet hikes.
+  metadata:
+    expect_fail: []
+- description: 'c19 Talus Hiking Boot: genuine leather is not the catalog grade; shouting caps'
+  vars:
+    case_id: c19
+    sku: LK-BOT-001
+    product_name: Talus Hiking Boot
+    materials: full-grain leather, rubber
+    care_note: Brush off dirt and condition the leather after wet hikes.
+  metadata:
+    expect_fail:
+    - brand_voice
+    - material_claim_matches_catalog
+- description: 'c20 Talus Hiking Boot: wrong product name; absolute durability claim'
+  vars:
+    case_id: c20
+    sku: LK-BOT-001
+    product_name: Talus Hiking Boot
+    materials: full-grain leather, rubber
+    care_note: Brush off dirt and condition the leather after wet hikes.
+  metadata:
+    expect_fail:
+    - names_the_product
+    - no_unapproved_superlatives
+- description: 'c21 Switchback 28L Daypack: clean'
+  vars:
+    case_id: c21
+    sku: LK-PCK-001
+    product_name: Switchback 28L Daypack
+    materials: ripstop nylon, aluminum
+    care_note: Spot clean only.
+  metadata:
+    expect_fail: []
+- description: 'c22 Switchback 28L Daypack: clean'
+  vars:
+    case_id: c22
+    sku: LK-PCK-001
+    product_name: Switchback 28L Daypack
+    materials: ripstop nylon, aluminum
+    care_note: Spot clean only.
+  metadata:
+    expect_fail: []
+- description: 'c23 Switchback 28L Daypack: clean; short but above the minimum'
+  vars:
+    case_id: c23
+    sku: LK-PCK-001
+    product_name: Switchback 28L Daypack
+    materials: ripstop nylon, aluminum
+    care_note: Spot clean only.
+  metadata:
+    expect_fail: []
+- description: 'c24 Switchback 28L Daypack: exclamation mark plus ''Hurry'''
+  vars:
+    case_id: c24
+    sku: LK-PCK-001
+    product_name: Switchback 28L Daypack
+    materials: ripstop nylon, aluminum
+    care_note: Spot clean only.
+  metadata:
+    expect_fail:
+    - brand_voice
+- description: 'c25 Switchback 28L Daypack: too long for the page slot'
+  vars:
+    case_id: c25
+    sku: LK-PCK-001
+    product_name: Switchback 28L Daypack
+    materials: ripstop nylon, aluminum
+    care_note: Spot clean only.
+  metadata:
+    expect_fail:
+    - length_within_limits
+- description: 'c26 Meadow 2P Tent: clean'
+  vars:
+    case_id: c26
+    sku: LK-TNT-001
+    product_name: Meadow 2P Tent
+    materials: ripstop nylon, aluminum
+    care_note: Keep flames and heat sources away from the tent fabric.
+  metadata:
+    expect_fail: []
+- description: 'c27 Meadow 2P Tent: clean'
+  vars:
+    case_id: c27
+    sku: LK-TNT-001
+    product_name: Meadow 2P Tent
+    materials: ripstop nylon, aluminum
+    care_note: Keep flames and heat sources away from the tent fabric.
+  metadata:
+    expect_fail: []
+- description: 'c28 Meadow 2P Tent: clean'
+  vars:
+    case_id: c28
+    sku: LK-TNT-001
+    product_name: Meadow 2P Tent
+    materials: ripstop nylon, aluminum
+    care_note: Keep flames and heat sources away from the tent fabric.
+  metadata:
+    expect_fail: []
+- description: 'c29 Meadow 2P Tent: missing the fire-safety disclaimer, and it even suggests cooking in the vestibule'
+  vars:
+    case_id: c29
+    sku: LK-TNT-001
+    product_name: Meadow 2P Tent
+    materials: ripstop nylon, aluminum
+    care_note: Keep flames and heat sources away from the tent fabric.
+  metadata:
+    expect_fail:
+    - required_care_or_disclaimer
+- description: 'c30 Meadow 2P Tent: stock opener, superlative and an exclamation mark'
+  vars:
+    case_id: c30
+    sku: LK-TNT-001
+    product_name: Meadow 2P Tent
+    materials: ripstop nylon, aluminum
+    care_note: Keep flames and heat sources away from the tent fabric.
+  metadata:
+    expect_fail:
+    - brand_voice
+    - no_intro_cliche
+    - no_unapproved_superlatives
+- description: 'c31 Harbor Bifold Wallet: clean'
+  vars:
+    case_id: c31
+    sku: LK-ACC-101
+    product_name: Harbor Bifold Wallet
+    materials: top-grain leather, cotton
+    care_note: Spot clean only.
+    max_words: 80
+  metadata:
+    expect_fail: []
+- description: 'c32 Harbor Bifold Wallet: clean'
+  vars:
+    case_id: c32
+    sku: LK-ACC-101
+    product_name: Harbor Bifold Wallet
+    materials: top-grain leather, cotton
+    care_note: Spot clean only.
+    max_words: 80
+  metadata:
+    expect_fail: []
+- description: 'c33 Harbor Bifold Wallet: clean'
+  vars:
+    case_id: c33
+    sku: LK-ACC-101
+    product_name: Harbor Bifold Wallet
+    materials: top-grain leather, cotton
+    care_note: Spot clean only.
+    max_words: 80
+  metadata:
+    expect_fail: []
+- description: 'c34 Harbor Bifold Wallet: the lesson''s example: stock opener, unapproved superlative, and full-grain on a top-grain wallet'
+  vars:
+    case_id: c34
+    sku: LK-ACC-101
+    product_name: Harbor Bifold Wallet
+    materials: top-grain leather, cotton
+    care_note: Spot clean only.
+    max_words: 80
+  metadata:
+    expect_fail:
+    - material_claim_matches_catalog
+    - no_intro_cliche
+    - no_unapproved_superlatives
+- description: 'c35 Harbor Bifold Wallet: over the 80-word limit for wallets'
+  vars:
+    case_id: c35
+    sku: LK-ACC-101
+    product_name: Harbor Bifold Wallet
+    materials: top-grain leather, cotton
+    care_note: Spot clean only.
+    max_words: 80
+  metadata:
+    expect_fail:
+    - length_within_limits
+- description: 'c36 Tarn Merino Beanie: clean; generic ''wool'' is covered'
+  vars:
+    case_id: c36
+    sku: LK-ACC-102
+    product_name: Tarn Merino Beanie
+    materials: merino wool
+    care_note: Hand wash cold and lay flat to dry.
+  metadata:
+    expect_fail: []
+- description: 'c37 Tarn Merino Beanie: clean'
+  vars:
+    case_id: c37
+    sku: LK-ACC-102
+    product_name: Tarn Merino Beanie
+    materials: merino wool
+    care_note: Hand wash cold and lay flat to dry.
+  metadata:
+    expect_fail: []
+- description: 'c38 Tarn Merino Beanie: clean'
+  vars:
+    case_id: c38
+    sku: LK-ACC-102
+    product_name: Tarn Merino Beanie
+    materials: merino wool
+    care_note: Hand wash cold and lay flat to dry.
+  metadata:
+    expect_fail: []
+- description: 'c39 Tarn Merino Beanie: cashmere is not in the catalog'
+  vars:
+    case_id: c39
+    sku: LK-ACC-102
+    product_name: Tarn Merino Beanie
+    materials: merino wool
+    care_note: Hand wash cold and lay flat to dry.
+  metadata:
+    expect_fail:
+    - material_claim_matches_catalog
+- description: 'c40 Tarn Merino Beanie: product name in the wrong case; unapproved guarantee claim'
+  vars:
+    case_id: c40
+    sku: LK-ACC-102
+    product_name: Tarn Merino Beanie
+    materials: merino wool
+    care_note: Hand wash cold and lay flat to dry.
+  metadata:
+    expect_fail:
+    - names_the_product
+    - no_unapproved_superlatives
+- description: 'c41 Bramble Camp Mug: clean; BPA is an approved acronym'
+  vars:
+    case_id: c41
+    sku: LK-ACC-103
+    product_name: Bramble Camp Mug
+    materials: stainless steel
+    care_note: Contents may be hot.
+  metadata:
+    expect_fail: []
+- description: 'c42 Bramble Camp Mug: clean; generic ''steel'' covered'
+  vars:
+    case_id: c42
+    sku: LK-ACC-103
+    product_name: Bramble Camp Mug
+    materials: stainless steel
+    care_note: Contents may be hot.
+  metadata:
+    expect_fail: []
+- description: 'c43 Bramble Camp Mug: clean'
+  vars:
+    case_id: c43
+    sku: LK-ACC-103
+    product_name: Bramble Camp Mug
+    materials: stainless steel
+    care_note: Contents may be hot.
+  metadata:
+    expect_fail: []
+- description: 'c44 Bramble Camp Mug: shouting caps; missing the hot-contents warning'
+  vars:
+    case_id: c44
+    sku: LK-ACC-103
+    product_name: Bramble Camp Mug
+    materials: stainless steel
+    care_note: Contents may be hot.
+  metadata:
+    expect_fail:
+    - brand_voice
+    - required_care_or_disclaimer
+- description: 'c45 Bramble Camp Mug: titanium is not in the catalog'
+  vars:
+    case_id: c45
+    sku: LK-ACC-103
+    product_name: Bramble Camp Mug
+    materials: stainless steel
+    care_note: Contents may be hot.
+  metadata:
+    expect_fail:
+    - material_claim_matches_catalog
+- description: 'c46 Drift Canvas Tote: clean'
+  vars:
+    case_id: c46
+    sku: LK-ACC-104
+    product_name: Drift Canvas Tote
+    materials: organic cotton canvas, vegan leather
+    care_note: Spot clean only.
+  metadata:
+    expect_fail: []
+- description: 'c47 Drift Canvas Tote: clean'
+  vars:
+    case_id: c47
+    sku: LK-ACC-104
+    product_name: Drift Canvas Tote
+    materials: organic cotton canvas, vegan leather
+    care_note: Spot clean only.
+  metadata:
+    expect_fail: []
+- description: 'c48 Drift Canvas Tote: clean'
+  vars:
+    case_id: c48
+    sku: LK-ACC-104
+    product_name: Drift Canvas Tote
+    materials: organic cotton canvas, vegan leather
+    care_note: Spot clean only.
+  metadata:
+    expect_fail: []
+- description: 'c49 Drift Canvas Tote: claims genuine leather on a tote whose catalog trim is vegan leather'
+  vars:
+    case_id: c49
+    sku: LK-ACC-104
+    product_name: Drift Canvas Tote
+    materials: organic cotton canvas, vegan leather
+    care_note: Spot clean only.
+  metadata:
+    expect_fail:
+    - material_claim_matches_catalog
+- description: 'c50 Drift Canvas Tote: stock opener and a universal claim'
+  vars:
+    case_id: c50
+    sku: LK-ACC-104
+    product_name: Drift Canvas Tote
+    materials: organic cotton canvas, vegan leather
+    care_note: Spot clean only.
+  metadata:
+    expect_fail:
+    - no_intro_cliche
+    - no_unapproved_superlatives

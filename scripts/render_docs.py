@@ -23,6 +23,8 @@ def load(name: str) -> dict:
 
 def table() -> str:
     a, h, f, b = load("browser-agent.json"), load("healing.json"), load("flakiness.json"), load("flakiness-before-fix.json")
+    c = load("promptfoo-evals.json")
+    per_rule = ", ".join(f"{k} {v['passed']}/{c['cases']}" for k, v in c["per_rule"].items())
     blocks = ", ".join(f"{k} {v}" for k, v in sorted(a["guardrail_blocks"].items()))
     rows = [
         ("Browser agent: feasible approved tasks completed", f"{a['success']}/{a['feasible_approved_tasks']}", f"{a['runs']} seeded runs, {a['model']}; measures the harness, not a real LLM"),
@@ -46,6 +48,19 @@ def table() -> str:
         ),
         ("Agent-app flakiness, before fix", f"{b['failed_executions']}/{b['executions']} failed, {len(b['flaky_tests'])} flaky test", f"{b['tests']} tests x {b['repeat_each']} repeats, retries 0"),
         ("Agent-app flakiness, after fix", f"{f['failed_executions']}/{f['executions']} failed", f"wall time {f['wall_seconds']} s"),
+        (
+            "Copy evals (promptfoo): clean descriptions",
+            f"{c['cases_passed']}/{c['cases']}",
+            f"{c['rules']} named rules, {c['assertions']} checks; offline fixture provider, so this checks the rules, not a model",
+        ),
+        ("Copy evals: cases failing exactly their planted rules", f"{c['cases_matching_expected_failures']}/{c['cases']}", "synthetic descriptions, some written to break rules"),
+        ("Copy evals: per-rule pass rate", per_rule, "one promptfoo metric per rule"),
+        (
+            "Copy evals: failures that name the rule and quote the text",
+            f"named {c['failure_reasons_in_named_format']}/{c['assertions_failed']}, bare booleans {c['bare']['failure_reasons_with_evidence']}/{c['bare']['assertions_failed']}",
+            f"bare run: {c['bare']['failure_reasons_starting_custom_function_returned_false']} reasons say only 'Custom function returned false', "
+            f"{c['bare']['per_rule_metrics_reported']} per-rule metrics",
+        ),
     ]
     out = ["| Measure | Result | Notes |", "|---|---|---|"]
     out += [f"| {m} | {r} | {n} |" for m, r, n in rows]

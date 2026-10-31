@@ -8,4 +8,5 @@ Outputs of real local runs. `scripts/render_docs.py` builds [docs/results.md](..
 | `healing.json` | Offline healer benchmark, 20 cases, written by `tests/healing/heal.spec.ts` |
 | `flakiness.json` | Agent-app slice run 20 times with retries off, after the fix |
 | `flakiness-before-fix.json` | The same measurement before the shared-state fix (1 flaky test, 6/440 failed) |
+| `promptfoo-evals.json` | promptfoo copy evals (`evals/promptfoo`): per-rule pass rates, planted-vs-actual failures, sample reasons, bare-boolean comparison; written by `scripts/promptfoo_summary.py` |
 | `sample-runs/` | Audit log (`audit.jsonl`) and generated replay spec for three runs: a return, a purchase and a blocked injection |

@@ -2,7 +2,7 @@
 
 | Workflow | Runs | Jobs |
 |---|---|---|
-| `ci.yml` | push to main, PRs | python (ruff, pytest: unit + workflow hardening + hygiene, release gate, doc drift), typescript (tsc, list every project), bicep (warnings fail), sbom (SPDX), secrets (gitleaks, full history) |
+| `ci.yml` | push to main, PRs | python (ruff, pytest: unit + workflow hardening + hygiene, release gate, doc drift), typescript (tsc, list every project), promptfoo (node --test for the rules, offline `npm run eval`, `promptfoo_summary.py --check`), bicep (warnings fail), sbom (SPDX), secrets (gitleaks, full history) |
 | `e2e.yml` | push, PRs, manual | e2e ×3 shards (setup, api, chromium, healing, generated) with blob reports → report (merge to HTML + JUnit artifacts), cross-browser (Firefox, WebKit, mobile on `@cross`/`@mobile`), visual (pinned Docker image) |
 | `codeql.yml` | push, PRs, weekly | javascript-typescript, python, actions |
 | `infra.yml` | push, PRs | terraform fmt/validate/test, tflint, checkov; plan only with Azure variables |
@@ -11,7 +11,7 @@
 
 ## Hardening
 
-All actions pinned to commit SHAs with version comments, top-level `permissions: contents: read`, `id-token: write` only on Azure jobs, no `pull_request_target`, no stored Azure secrets, Docker images pinned by digest, Dependabot for npm, pip, actions, docker and terraform. `tests/py/test_workflows.py` fails the build if any of that regresses.
+All actions pinned to commit SHAs with version comments, top-level `permissions: contents: read`, `id-token: write` only on Azure jobs, no `pull_request_target`, no stored Azure secrets, Docker images pinned by digest, Dependabot for npm (root and `evals/promptfoo`), pip, actions, docker and terraform. `tests/py/test_workflows.py` fails the build if any of that regresses.
 
 ## Flakiness policy in CI
 

@@ -10,6 +10,7 @@
 | `interview-coverage.md` | Every study-guide question mapped to a file and test |
 | `flaky-test-playbook.md` | Measuring and fixing flakes, with two real ones |
 | `testing-ai-output.md` | Assertions for non-deterministic answers |
+| `promptfoo-business-rules.md` | promptfoo evals for AI product copy: named rules vs bare booleans, real pass rates |
 | `browser-agent-safety.md` | Risks and controls for browser agents |
 | `threat-model.md` | STRIDE, OWASP LLM Top 10 (2025), OWASP Top 10 |
 | `azure.md` | Azure mapping, Entra-only cloud browsers, how to enable |
