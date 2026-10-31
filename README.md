@@ -39,7 +39,7 @@ handsagent bench --seeds 50                  # browser-agent benchmark (needs th
 |---|---|---|
 | Playwright, default CI projects (setup, api, chromium, healing, generated, visual) | 148 | `tests/` |
 | Playwright, cross-browser runs of `@cross`/`@mobile` tests (Firefox, WebKit, mobile) | 25 | same specs, extra projects |
-| pytest (1 test runs the live eval and is skipped where Node 22 is not set up) | 145 | `tests/py/` |
+| pytest (1 test runs the live eval and is skipped where Node 22 is not set up) | 151 | `tests/py/` |
 | node --test, promptfoo rules and eval wiring | 96 | `evals/promptfoo/test/` |
 | promptfoo eval cases (7 named rules each, 350 checks) | 50 | `evals/promptfoo/tests.yaml` |
 
