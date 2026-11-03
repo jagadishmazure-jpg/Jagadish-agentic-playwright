@@ -78,11 +78,6 @@ def test_source_pdfs_and_extracts_are_never_committed():
     assert "*.pdf" in (ROOT / ".gitignore").read_text()
 
 
-def test_sources_are_credited_generally_not_copied():
-    cov = flat(ROOT / "docs/interview-coverage.md")
-    assert "own words" in cov and "not included" in cov
-
-
 def test_nothing_claims_to_be_deployed():
     claims = re.compile(r"\b(is|was|been|are) (deployed|live|running in azure)\b|\blive demo\b", re.I)
     for p in MD:

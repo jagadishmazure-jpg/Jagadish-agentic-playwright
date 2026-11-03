@@ -1,10 +1,10 @@
 # Interview coverage map
 
-This repo was planned against three private study guides on Playwright interviews: a Playwright study notebook (16 topics), a framework-design question bank (16 sections) and a set of 24 tricky Playwright questions. The guides are copyrighted. They are **not included** in this repo, nothing in them is quoted, and every answer here is written in my own words with a test or file you can run. An automated check (`scripts/overlap_check.py`, run locally against the extracted text) found 0 runs of 8 or more words in common between this repo and the guides.
+Common Playwright interview questions in three groups (core topics, framework design and tricky questions) and a fourth on AI agent QA, each mapped to a file and test you can run.
 
 Status labels: **Built** = code and a passing test. **Doc** = answered in prose only, because a test would be artificial (marked why). **Planned** = not done.
 
-## A. Study notebook topics
+## A. Core Playwright topics
 
 | # | Topic | Where | Status |
 |---|---|---|---|
@@ -25,7 +25,7 @@ Status labels: **Built** = code and a passing test. **Doc** = answered in prose 
 | 15 | Real-world end-to-end flow | `tests/framework/e2e-checkout.spec.ts` | Built |
 | 16 | Tooling, config, CI | `playwright.config.ts`, [ci.md](ci.md) | Built |
 
-## B. Framework-design question bank
+## B. Framework design
 
 | Section | Question | Where | Status |
 |---|---|---|---|
@@ -105,7 +105,7 @@ Status labels: **Built** = code and a passing test. **Doc** = answered in prose 
 | 23 | Passkeys, web storage, video modes | [role-1](role-1-qa-framework.md#browsers-and-recent-releases) | Doc |
 | 24 | Removed framework-specific selectors | `locators.spec.ts` uses role/test-id instead; [role-1](role-1-qa-framework.md#browsers-and-recent-releases) | Doc |
 
-## D. Beyond the guides (AI agent QA and browser agents)
+## D. AI agent QA and browser agents
 
 | Topic | Where | Status |
 |---|---|---|

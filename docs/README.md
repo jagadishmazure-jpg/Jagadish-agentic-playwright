@@ -7,7 +7,7 @@
 | `role-2-ai-app-qa.md` | Testing the AI support assistant |
 | `role-3-browser-agent.md` | Agent Framework + Playwright MCP with guardrails, benchmark |
 | `test-agents.md` | Planner/generator/healer agents and the offline healer |
-| `interview-coverage.md` | Every study-guide question mapped to a file and test |
+| `interview-coverage.md` | Every interview question mapped to a file and test |
 | `flaky-test-playbook.md` | Measuring and fixing flakes, with two real ones |
 | `testing-ai-output.md` | Assertions for non-deterministic answers |
 | `promptfoo-business-rules.md` | promptfoo evals for AI product copy: named rules vs bare booleans, real pass rates |

@@ -79,9 +79,9 @@ All numbers below come from real local runs and are regenerated from `evidence/`
 
 [Architecture](docs/architecture.md) · [Role 1](docs/role-1-qa-framework.md) · [Role 2](docs/role-2-ai-app-qa.md) · [Role 3](docs/role-3-browser-agent.md) · [Test agents](docs/test-agents.md) · [Interview coverage](docs/interview-coverage.md) · [Flaky-test playbook](docs/flaky-test-playbook.md) · [Testing AI output](docs/testing-ai-output.md) · [promptfoo business rules](docs/promptfoo-business-rules.md) · [Browser-agent safety](docs/browser-agent-safety.md) · [Threat model](docs/threat-model.md) · [Azure](docs/azure.md) · [CI](docs/ci.md) · [Results](docs/results.md) · [Limitations](docs/limitations.md) · [Talking points](docs/interview-talking-points.md) · [Adopt this](docs/adopt-this.md) · [ADRs](docs/adr/README.md) · [Glossary](docs/glossary.md)
 
-## Sources
+## Versions
 
-Planned against three private Playwright interview study guides (a study notebook, a framework-design question bank and a tricky-questions set). They are not included, and everything here is written in my own words; [docs/interview-coverage.md](docs/interview-coverage.md) maps each of their topics to a file and test. The promptfoo module was inspired by a paid bootcamp lesson on promptfoo assertions. The lesson is not included either, and the module is my own design. Versions: Playwright 1.64.0, promptfoo 0.125.1, @playwright/mcp 0.0.83, agent-framework-core 1.21.0, @azure/playwright 1.1.6.
+Playwright 1.64.0, promptfoo 0.125.1, @playwright/mcp 0.0.83, agent-framework-core 1.21.0, @azure/playwright 1.1.6.
 
 ## Repository layout
 

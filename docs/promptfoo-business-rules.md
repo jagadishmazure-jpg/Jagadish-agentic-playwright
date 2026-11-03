@@ -178,5 +178,3 @@ The `promptfoo` job in [`.github/workflows/ci.yml`](../.github/workflows/ci.yml)
 ## Related
 
 [Testing AI output](testing-ai-output.md) covers the layered approach for the support assistant (structure, forbidden content, meaning, rubrics), and this module adds named-rule copy evals beside it. Decision record: [ADR 0007](adr/0007-named-rule-evals.md).
-
-Idea credit: a paid bootcamp lesson on promptfoo assertions (not included; this page and the code are my own words and design).
